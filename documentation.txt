@@ -1,0 +1,11 @@
+Step 1: Create React App using yarn create react-app recipe-appor npx create-react-app recipe-app
+
+Step 2: Signup https://developer.edamam.com/edamam-docs-recipe-api and get api key.
+
+Step 3 : Using api key and axios for getting data from https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&mealType=${meal}.
+
+Step 4: You are expected to code your project with styled component
+
+Step 5 : You can get random login background image from https://picsum.photos/1600/900
+
+Step 6: Add project gif to your project and README.md file.
