@@ -3,11 +3,11 @@ import { blueGrey, lightGreen } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
+import Login from './components/Welcome';
 import AuthProvider from './context/AuthProvider';
 
 function App() {
-    const [darkMode, setDarkMode] = useState('dark');
+    const [darkMode, setDarkMode] = useState('light');
     const theme = createTheme({
         palette: {
             mode: `${darkMode}`,
@@ -38,13 +38,15 @@ function App() {
                 <Login />
             </Paper>
         </ThemeProvider> */
-        <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Login />} />
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 

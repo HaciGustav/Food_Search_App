@@ -15,4 +15,5 @@ export const flexColumn = {
     flexDirection: 'column',
     rowGap: '10px',
     alignItems: 'center',
+    width: '100%',
 };
