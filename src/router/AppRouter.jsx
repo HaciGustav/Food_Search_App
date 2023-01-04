@@ -1,17 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from '../pages/Home';
+import Welcome from '../pages/Welcome';
 
 const AppRouter = () => {
     return (
-        <Router>
+        <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="home" element={<PrivateRouter />}>
-                    {/* */}
-                </Route>
+                <Route path="/" element={<Welcome />} />
+                <Route path="/home" element={<Home />} />
+                {/* <Route path="/profile" element={<Home />} /> */}
             </Routes>
-        </Router>
+        </BrowserRouter>
     );
 };
 
