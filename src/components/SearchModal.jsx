@@ -29,15 +29,17 @@ const style = {
 
 export default function SearchModal({
     handleCheck,
+    handleSubmit,
     open,
     setOpen,
     checkValue,
+    setCheckValue,
 }) {
     const handleClose = () => setOpen(false);
-
+    const handleReset = () => setCheckValue({});
+    console.log(checkValue);
     return (
         <div>
-            {/* <Button onClick={handleOpen}>Open modal</Button> */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -65,6 +67,8 @@ export default function SearchModal({
                                 variant="standard"
                                 label="Search Recipe"
                                 name="q"
+                                value={checkValue.q || ' '}
+                                onChange={handleCheck}
                             />
                         </Box>{' '}
                         <Box
@@ -73,7 +77,9 @@ export default function SearchModal({
                                 justifyContent: 'center',
                                 columnGap: '10px',
                             }}>
-                            <Button variant="contained">Reset</Button>
+                            <Button variant="contained" onClick={handleReset}>
+                                Reset
+                            </Button>
                             <Button variant="contained">Search</Button>
                         </Box>
                         <Grid

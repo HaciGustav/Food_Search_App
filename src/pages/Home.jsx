@@ -1,5 +1,6 @@
-import { Box, Button, Paper, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Box, Button, Grid, Paper, TextField } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import RecipeReviewCard from '../components/RecipeReviewCard';
 import SearchModal from '../components/SearchModal';
@@ -9,9 +10,37 @@ const Home = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [data, setData] = useState([]);
+
     const [checkValue, setCheckValue] = useState({
-        mealType: {},
+        mealType: 'dinner',
     });
+    const getRecipe = async () => {
+        let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+
+        if (checkValue.q && checkValue.q.length > 1) {
+            url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+        }
+        if (checkValue.mealType && checkValue.mealType.length > 1) {
+            url = url + '&mealType=' + checkValue.mealType;
+        }
+        if (checkValue.health && checkValue.health.length > 1) {
+            url = url + '&health=' + checkValue.health;
+        }
+        if (checkValue.dishType && checkValue.dishType.length > 1) {
+            url = url + '&dishType=' + checkValue.dishType;
+        }
+        console.log(url);
+        try {
+            const { data } = await axios(url);
+            setData(data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    console.log(data);
 
     const handleCheck = (e) => {
         setCheckValue((prevValue) => ({
@@ -20,17 +49,30 @@ const Home = () => {
         }));
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // console.log(checkValue);
+        getRecipe();
+    };
+
+    useEffect(() => {
+        getRecipe();
+    }, []);
+
     return (
         <Paper>
             <Navbar />
             <SearchModal
                 handleCheck={handleCheck}
+                handleSubmit={handleSubmit}
                 open={open}
                 setOpen={setOpen}
                 checkValue={checkValue}
+                setCheckValue={setCheckValue}
             />
             <Box
                 component={'form'}
+                onSubmit={(e) => handleSubmit(e)}
                 sx={{
                     backgroundImage: `url(https://github.com/HaciGustav/Food_Search_App/blob/main/src/assets/home_images/a.jpg?raw=true)`,
                     backgroundSize: 'cover',
@@ -54,6 +96,8 @@ const Home = () => {
                         id="standard-basic"
                         variant="filled"
                         label="Search Recipe"
+                        name="q"
+                        onChange={handleCheck}
                         sx={{
                             backgroundColor: '#90a4aea6',
                             width: '35vw',
@@ -80,11 +124,14 @@ const Home = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {[1, 1, 1].map((item, i) => (
-                    <RecipeReviewCard key={i} />
+            <Grid
+                container
+                spacing={2}
+                sx={{ justifyContent: 'center', paddingTop: '1rem' }}>
+                {data?.hits?.map((item, i) => (
+                    <RecipeReviewCard item={item} key={i} />
                 ))}
-            </Box>
+            </Grid>
         </Paper>
     );
 };
