@@ -5,14 +5,18 @@ import loginBG from '../assets/loginBG.jpg';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { blueGrey, red, teal } from '@mui/material/colors';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
     const [loginValues, setLoginValues] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [getStarted, setGetStarted] = useState(false);
+    const navigate = useNavigate();
     const handleGetStarted = () => {
         setGetStarted((prevState) => !prevState);
+        setTimeout(() => {
+            navigate('/home');
+        }, 750);
     };
 
     const handleChange = (e) => {

@@ -6,8 +6,12 @@ import Modal from '@mui/material/Modal';
 import {
     FormControlLabel,
     Grid,
+    InputLabel,
+    MenuItem,
     Radio,
     RadioGroup,
+    Select,
+    Slider,
     TextField,
 } from '@mui/material';
 
@@ -18,8 +22,9 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: '60vw',
     minWidth: '300px',
+    height: '80%',
     maxHeight: '100vh',
-
+    overflow: 'auto',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     borderRadius: '1rem',
@@ -36,8 +41,41 @@ export default function SearchModal({
     setCheckValue,
 }) {
     const handleClose = () => setOpen(false);
-    const handleReset = () => setCheckValue({});
+    const handleReset = () =>
+        setCheckValue({
+            mealType: 'dinner',
+        });
     console.log(checkValue);
+
+    const cuisineArr = [
+        'american',
+        'asian',
+        'british',
+        'caribbean',
+        'chinese',
+        'french',
+        'greek',
+        'indian',
+        'italian',
+        'japanese',
+        'korean',
+        'kosher',
+        'mediterranean',
+        'mexican',
+        'nordic',
+        'world',
+        ' ',
+    ];
+    const dietArr = [
+        'balanced',
+        'high-fiber',
+        'high-protein',
+        'low-carb',
+        'low-fat',
+        'low-sodium',
+        ' ',
+    ];
+
     return (
         <div>
             <Modal
@@ -49,7 +87,8 @@ export default function SearchModal({
                     <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'center',
+                            justifyContent: 'space-between',
+                            height: '100%',
                             alignItems: 'center',
                             flexDirection: 'column',
                             rowGap: '5px',
@@ -61,43 +100,55 @@ export default function SearchModal({
                                 padding: '1.5rem',
                                 borderRadius: '1rem 1rem 0 0',
                                 backgroundColor: 'beige',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                rowGap: '10px',
+                                alignItems: 'center',
                             }}>
                             <TextField
                                 sx={{ width: '50%' }}
                                 variant="standard"
                                 label="Search Recipe"
                                 name="q"
-                                value={checkValue.q || ' '}
+                                value={checkValue.q || ''}
                                 onChange={handleCheck}
                             />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    columnGap: '10px',
+                                    paddingBottom: '1rem',
+                                }}>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleReset}>
+                                    Reset
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleSubmit}>
+                                    Search
+                                </Button>
+                            </Box>
                         </Box>{' '}
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                columnGap: '10px',
-                            }}>
-                            <Button variant="contained" onClick={handleReset}>
-                                Reset
-                            </Button>
-                            <Button variant="contained">Search</Button>
-                        </Box>
                         <Grid
                             container
                             direction="row"
                             spacing={2}
                             sx={{
                                 paddingInline: '2rem',
+                                justifyContent: 'space-around',
                             }}>
                             <Grid
                                 item
-                                xs={12}
+                                sm={12}
                                 md={4}
                                 sx={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    borderRight: '2px solid black',
-                                    borderBottom: '2px solid black',
+                                    border: '2px solid black',
+                                    width: '100%',
                                 }}>
                                 <span
                                     style={{
@@ -157,14 +208,14 @@ export default function SearchModal({
                             </Grid>
                             <Grid
                                 item
-                                xs={12}
+                                sm={12}
                                 md={4}
                                 sx={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    borderRight: '2px solid black',
-                                    borderBottom: '2px solid black',
+                                    border: '2px solid black',
                                     paddingTop: '10px',
+                                    width: '100%',
                                 }}>
                                 <span
                                     style={{
@@ -188,10 +239,10 @@ export default function SearchModal({
                                         label="Drinks"
                                     />
                                     <FormControlLabel
-                                        value="main course"
+                                        value="main-course"
                                         checked={
                                             checkValue.dishType ===
-                                            'main course'
+                                            'main-course'
                                         }
                                         control={<Radio name="dishType" />}
                                         label="Main Course"
@@ -222,14 +273,14 @@ export default function SearchModal({
                             </Grid>
                             <Grid
                                 item
-                                xs={12}
+                                sm={12}
                                 md={4}
                                 sx={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    borderRight: '2px solid black',
-                                    borderBottom: '2px solid black',
+                                    border: '2px solid black',
                                     paddingTop: '10px',
+                                    width: '100%',
                                 }}>
                                 <span
                                     style={{
@@ -283,6 +334,78 @@ export default function SearchModal({
                                         label="Vegetarian"
                                     />
                                 </RadioGroup>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            container
+                            direction="row"
+                            spacing={2}
+                            sx={{
+                                paddingInline: '2rem',
+                                justifyContent: 'space-around',
+                            }}>
+                            <Grid
+                                item
+                                sx={{
+                                    width: 300,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    direction: 'column',
+                                }}>
+                                <InputLabel id="ingredients">
+                                    Ingredients
+                                </InputLabel>
+                                <Slider
+                                    name="ingr"
+                                    labelId="ingredients"
+                                    aria-label="Ingredients"
+                                    defaultValue={10}
+                                    onChange={handleCheck}
+                                    getAriaValueText={() =>
+                                        `${checkValue.ingr}`
+                                    }
+                                    valueLabelDisplay="auto"
+                                    step={1}
+                                    marks
+                                    min={0}
+                                    max={30}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <InputLabel id="cuisine-select">
+                                    Cuisine Type
+                                </InputLabel>
+                                <Select
+                                    sx={{ width: 250 }}
+                                    labelId="cuisine-select"
+                                    name="cuisineType"
+                                    value={checkValue.cuisineType || ' '}
+                                    label="Cuisine Type"
+                                    onChange={handleCheck}>
+                                    {cuisineArr.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            {item.toUpperCase()}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </Grid>
+                            <Grid item>
+                                <InputLabel id="diet-select">
+                                    Diet Labels
+                                </InputLabel>
+                                <Select
+                                    sx={{ width: 250 }}
+                                    labelId="diet-select"
+                                    name="dietType"
+                                    value={checkValue.dietType || ' '}
+                                    label="Diet Label"
+                                    onChange={handleCheck}>
+                                    {dietArr.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            {item.toUpperCase()}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </Grid>
                         </Grid>
                     </Box>

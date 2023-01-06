@@ -35,7 +35,7 @@ const RecipeReviewCard = ({ item }) => {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    console.log(item);
+    // console.log(item);
     return (
         <Grid item>
             <Card sx={{ maxWidth: 345 }}>

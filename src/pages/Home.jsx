@@ -22,16 +22,16 @@ const Home = () => {
         if (checkValue.q && checkValue.q.length > 1) {
             url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
         }
-        if (checkValue.mealType && checkValue.mealType.length > 1) {
-            url = url + '&mealType=' + checkValue.mealType;
-        }
-        if (checkValue.health && checkValue.health.length > 1) {
-            url = url + '&health=' + checkValue.health;
-        }
-        if (checkValue.dishType && checkValue.dishType.length > 1) {
-            url = url + '&dishType=' + checkValue.dishType;
-        }
-        console.log(url);
+
+        Object.keys(checkValue).forEach((item) => {
+            if (item === 'ingr') {
+                url = url + `&${item}=` + '0-' + checkValue[item];
+            } else if (checkValue[item] && checkValue[item].length > 1) {
+                url = url + `&${item}=` + checkValue[item];
+            }
+        });
+        console.log('after', url);
+
         try {
             const { data } = await axios(url);
             setData(data);
@@ -39,8 +39,6 @@ const Home = () => {
             console.log(error.message);
         }
     };
-
-    console.log(data);
 
     const handleCheck = (e) => {
         setCheckValue((prevValue) => ({
@@ -51,8 +49,8 @@ const Home = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(checkValue);
         getRecipe();
+        handleClose();
     };
 
     useEffect(() => {
