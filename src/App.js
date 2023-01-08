@@ -2,8 +2,8 @@ import { ThemeProvider } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from './context/AuthProvider';
 import AppRouter from './router/AppRouter';
 
@@ -26,6 +26,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <AuthProvider>
                 <AppRouter />
+                <ToastContainer />
             </AuthProvider>
         </ThemeProvider>
     );
