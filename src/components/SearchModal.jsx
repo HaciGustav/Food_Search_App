@@ -8,6 +8,7 @@ import {
     Grid,
     InputLabel,
     MenuItem,
+    Paper,
     Radio,
     RadioGroup,
     Select,
@@ -26,10 +27,18 @@ const style = {
     maxHeight: '100vh',
     overflow: 'auto',
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    color: 'text.primary',
+    // border: '2px solid #000',
     borderRadius: '1rem',
     boxShadow: 24,
-    paddingBottom: '1.5rem',
+    // paddingBottom: '2rem',
+};
+
+const gridStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    border: '2px solid black',
+    width: '100%',
 };
 
 export default function SearchModal({
@@ -45,7 +54,6 @@ export default function SearchModal({
         setCheckValue({
             mealType: 'dinner',
         });
-    console.log(checkValue);
 
     const cuisineArr = [
         'american',
@@ -77,7 +85,7 @@ export default function SearchModal({
     ];
 
     return (
-        <div>
+        <Paper>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -87,11 +95,11 @@ export default function SearchModal({
                     <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'space-between',
+                            // justifyContent: 'space-between',
                             height: '100%',
                             alignItems: 'center',
                             flexDirection: 'column',
-                            rowGap: '5px',
+                            rowGap: '10%',
                         }}>
                         <Box
                             sx={{
@@ -99,15 +107,19 @@ export default function SearchModal({
                                 textAlign: 'center',
                                 padding: '1.5rem',
                                 borderRadius: '1rem 1rem 0 0',
-                                backgroundColor: 'beige',
+                                backgroundColor: '#B33F00',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 rowGap: '10px',
                                 alignItems: 'center',
                             }}>
                             <TextField
-                                sx={{ width: '50%' }}
-                                variant="standard"
+                                sx={{
+                                    width: '50%',
+                                    minWidth: '200px',
+                                    backgroundColor: '#90a4aea6',
+                                }}
+                                variant="filled"
                                 label="Search Recipe"
                                 name="q"
                                 value={checkValue.q || ''}
@@ -140,16 +152,7 @@ export default function SearchModal({
                                 paddingInline: '2rem',
                                 justifyContent: 'space-around',
                             }}>
-                            <Grid
-                                item
-                                sm={12}
-                                md={4}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    border: '2px solid black',
-                                    width: '100%',
-                                }}>
+                            <Grid item sm={12} md={6} sx={gridStyle}>
                                 <span
                                     style={{
                                         paddingRight: '10px',
@@ -206,17 +209,7 @@ export default function SearchModal({
                                     />
                                 </RadioGroup>
                             </Grid>
-                            <Grid
-                                item
-                                sm={12}
-                                md={4}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    border: '2px solid black',
-                                    paddingTop: '10px',
-                                    width: '100%',
-                                }}>
+                            <Grid item sm={12} md={6} sx={gridStyle}>
                                 <span
                                     style={{
                                         paddingRight: '10px',
@@ -271,17 +264,7 @@ export default function SearchModal({
                                     />
                                 </RadioGroup>
                             </Grid>
-                            <Grid
-                                item
-                                sm={12}
-                                md={4}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    border: '2px solid black',
-                                    paddingTop: '10px',
-                                    width: '100%',
-                                }}>
+                            <Grid item sm={12} md={12} sx={gridStyle}>
                                 <span
                                     style={{
                                         paddingRight: '10px',
@@ -389,7 +372,7 @@ export default function SearchModal({
                                     ))}
                                 </Select>
                             </Grid>
-                            <Grid item>
+                            <Grid item sx={{ paddingBottom: '1rem' }}>
                                 <InputLabel id="diet-select">
                                     Diet Labels
                                 </InputLabel>
@@ -411,6 +394,6 @@ export default function SearchModal({
                     </Box>
                 </Box>
             </Modal>
-        </div>
+        </Paper>
     );
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import RecipeReviewCard from '../components/RecipeReviewCard';
+import Register from '../components/Register';
 import SearchModal from '../components/SearchModal';
 
 const Home = () => {
@@ -30,7 +31,6 @@ const Home = () => {
                 url = url + `&${item}=` + checkValue[item];
             }
         });
-        console.log('after', url);
 
         try {
             const { data } = await axios(url);
@@ -68,6 +68,7 @@ const Home = () => {
                 checkValue={checkValue}
                 setCheckValue={setCheckValue}
             />
+
             <Box
                 component={'form'}
                 onSubmit={(e) => handleSubmit(e)}
