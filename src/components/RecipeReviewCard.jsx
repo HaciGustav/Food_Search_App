@@ -6,15 +6,18 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
+import Link from '@mui/material/Link';
+import { Box } from '@mui/system';
+import { useAuthContext } from '../context/AuthProvider';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { addRecipe, getFavoriteRecipe } from '../firebase/firestore';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -27,41 +30,153 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const RecipeReviewCard = ({ item }) => {
+const RecipeReviewCard = ({
+    item,
+    favoriteRecipeList,
+    setFavoriteRecipeList,
+}) => {
     const [expanded, setExpanded] = React.useState(false);
+    const { user } = useAuthContext();
 
-    const { label, image } = item.recipe;
+    const {
+        label,
+        image,
+        source,
+        url,
+        uri,
+        ingredientLines,
+        totalTime,
+        dishType,
+        mealType,
+        cuisineType,
+        calories,
+    } = item.recipe;
+
+    const handleFavorite = () => {
+        const { email } = user;
+        const data = { email, label, image, url, uri };
+        addRecipe(data);
+    };
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    // console.log(item);
+
+    const isFavorite = () => {
+        return favoriteRecipeList?.filter((recipe) => recipe?.uri === uri)
+            .length;
+    };
+    /* const isFavorite = () => {
+        return favoriteRecipeList
+            ?.filter((recipe) => recipe?.uri === uri)
+            ?.map((recipe) => {
+                if (recipe.uri === uri) {
+                    return <FavoriteIcon sx={{ color: '#BD2A2E' }} />;
+                } else {
+                    console.log('else');
+                    return <FavoriteBorderIcon />;
+                }
+            });
+    }; */
+
+    React.useEffect(() => {
+        getFavoriteRecipe(user?.email, setFavoriteRecipeList);
+    }, []);
+
     return (
-        <Grid item>
-            <Card sx={{ maxWidth: 345 }}>
-                <CardHeader
-                    title={label}
-                    // subheader="September 14, 2016"
-                />
+        <Grid item xs={10} sm={6} md={4} lg={3} justifyContent="center">
+            <Card sx={{ maxWidth: 345, margin: 'auto' }}>
+                <CardHeader title={label} subheader={source} />
                 <CardMedia
                     component="img"
                     height="194"
                     image={image}
-                    alt="Paella dish"
+                    alt={label}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        This impressive paella is a perfect party dish and a fun
-                        meal to cook together with your guests. Add 1 cup of
-                        frozen peas along with the mussels, if you like.
-                    </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-evenly',
+                        }}>
+                        <Typography
+                            sx={{
+                                border: '1px solid grey',
+                                padding: '3px',
+                                width: '50%',
+                                cursor: 'pointer',
+                                '&:hover': { color: '#B33F00' },
+                            }}
+                            variant="body2"
+                            color="text.secondary">
+                            Calories:{' '}
+                            {calories ? Number(calories).toFixed(2) : 'Unknown'}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                border: '1px solid grey',
+                                padding: '3px',
+                                width: '50%',
+                                cursor: 'pointer',
+                                '&:hover': { color: '#B33F00' },
+                            }}
+                            variant="body2"
+                            color="text.secondary">
+                            Cuisine:{' '}
+                            {cuisineType
+                                ? cuisineType[0].toUpperCase()
+                                : 'Unknown'}
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-evenly',
+                            paddingTop: '10px',
+                        }}>
+                        <Typography
+                            sx={{
+                                border: '1px solid grey',
+                                padding: '3px',
+                                width: '50%',
+                                cursor: 'pointer',
+                                '&:hover': { color: '#B33F00' },
+                            }}
+                            variant="body2"
+                            color="text.secondary">
+                            {mealType ? mealType[0] : 'Unknown'}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                border: '1px solid grey',
+                                padding: '3px',
+                                width: '50%',
+                                cursor: 'pointer',
+                                '&:hover': { color: '#B33F00' },
+                            }}
+                            variant="body2"
+                            color="text.secondary">
+                            {dishType ? dishType[0] : 'Unknown'}
+                        </Typography>
+                    </Box>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
+                    {user && (
+                        <IconButton
+                            onClick={handleFavorite}
+                            aria-label="add to favorites">
+                            {isFavorite() ? (
+                                <FavoriteIcon sx={{ color: '#BD2A2E' }} />
+                            ) : (
+                                <FavoriteBorderIcon />
+                            )}
+                        </IconButton>
+                    )}
+
                     <IconButton aria-label="share">
-                        <LinkIcon />
+                        <Link href={url}>
+                            <LinkIcon />
+                        </Link>
                     </IconButton>
                     <ExpandMore
                         expand={expanded}
@@ -73,39 +188,13 @@ const RecipeReviewCard = ({ item }) => {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography paragraph>Method:</Typography>
-                        <Typography paragraph>
-                            Heat 1/2 cup of the broth in a pot until simmering,
-                            add saffron and set aside for 10 minutes.
-                        </Typography>
-                        <Typography paragraph>
-                            Heat oil in a (14- to 16-inch) paella pan or a
-                            large, deep skillet over medium-high heat. Add
-                            chicken, shrimp and chorizo, and cook, stirring
-                            occasionally until lightly browned, 6 to 8 minutes.
-                            Transfer shrimp to a large plate and set aside,
-                            leaving chicken and chorizo in the pan. Add
-                            pimentón, bay leaves, garlic, tomatoes, onion, salt
-                            and pepper, and cook, stirring often until thickened
-                            and fragrant, about 10 minutes. Add saffron broth
-                            and remaining 4 1/2 cups chicken broth; bring to a
-                            boil.
-                        </Typography>
-                        <Typography paragraph>
-                            Add rice and stir very gently to distribute. Top
-                            with artichokes and peppers, and cook without
-                            stirring, until most of the liquid is absorbed, 15
-                            to 18 minutes. Reduce heat to medium-low, add
-                            reserved shrimp and mussels, tucking them down into
-                            the rice, and cook again without stirring, until
-                            mussels have opened and rice is just tender, 5 to 7
-                            minutes more. (Discard any mussels that don&apos;t
-                            open.)
-                        </Typography>
-                        <Typography>
-                            Set aside off of the heat to let rest for 10
-                            minutes, and then serve.
-                        </Typography>
+                        <Typography paragraph>Ingredients:</Typography>
+
+                        {ingredientLines?.map((item) => (
+                            <Typography key={item} paragraph>
+                                {item}
+                            </Typography>
+                        ))}
                     </CardContent>
                 </Collapse>
             </Card>

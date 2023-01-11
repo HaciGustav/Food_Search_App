@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 import RecipeReviewCard from '../components/RecipeReviewCard';
 import Register from '../components/Register';
 import SearchModal from '../components/SearchModal';
+import { useAuthContext } from '../context/AuthProvider';
+import { getFavoriteRecipe } from '../firebase/firestore';
 
 const Home = () => {
     // open function for modal
@@ -13,10 +15,14 @@ const Home = () => {
     const handleClose = () => setOpen(false);
 
     const [data, setData] = useState([]);
+    const [favoriteRecipeList, setFavoriteRecipeList] = useState([]);
 
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
     });
+
+    const { user } = useAuthContext();
+
     const getRecipe = async () => {
         let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
 
@@ -53,8 +59,13 @@ const Home = () => {
         handleClose();
     };
 
+    // const isFavoriteFilter = ()=>{
+
+    // }
+
     useEffect(() => {
         getRecipe();
+        getFavoriteRecipe(user?.email, setFavoriteRecipeList);
     }, []);
 
     return (
@@ -126,9 +137,19 @@ const Home = () => {
             <Grid
                 container
                 spacing={2}
-                sx={{ justifyContent: 'center', paddingTop: '1rem' }}>
+                sx={{
+                    justifyContent: 'center',
+                    paddingTop: '1rem',
+                    width: '80%',
+                    margin: 'auto',
+                }}>
                 {data?.hits?.map((item, i) => (
-                    <RecipeReviewCard item={item} key={i} />
+                    <RecipeReviewCard
+                        favoriteRecipeList={favoriteRecipeList}
+                        setFavoriteRecipeList={setFavoriteRecipeList}
+                        item={item}
+                        key={i}
+                    />
                 ))}
             </Grid>
         </Paper>

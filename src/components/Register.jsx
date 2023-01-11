@@ -45,7 +45,11 @@ export default function Register({
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //sign up function
         handleSignUp(formValues, setUser);
+
+        //add user to db function
+
         setRegisterOpen(false);
     };
 
