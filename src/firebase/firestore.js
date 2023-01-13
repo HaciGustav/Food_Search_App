@@ -1,5 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getDocs, getFirestore, query, where } from 'firebase/firestore';
+import {
+    deleteDoc,
+    doc,
+    getDocs,
+    getFirestore,
+    query,
+    where,
+} from 'firebase/firestore';
 import { collection, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -46,9 +53,21 @@ export const getFavoriteRecipe = async (email, setFavoriteRecipeList) => {
 
         querySnapshot.forEach((doc) => {
             recipeArray.push({ ...doc.data(), id: doc.id });
-            setFavoriteRecipeList(recipeArray);
         });
     } catch (error) {
         console.log(error.message);
+    }
+
+    return recipeArray;
+};
+
+export const deleteRecipe = async (id) => {
+    const docRef = doc(db, 'favoriteRecipes', id);
+
+    try {
+        deleteDoc(docRef);
+        console.log('deleted');
+    } catch (err) {
+        console.log(err);
     }
 };

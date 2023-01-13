@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from './context/AuthProvider';
+import FavRecipeProvider from './context/FavoriteRecipeProvider';
 import AppRouter from './router/AppRouter';
 
 function App() {
@@ -25,8 +26,11 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <AuthProvider>
-                <AppRouter />
-                <ToastContainer />
+                <FavRecipeProvider>
+                    <AppRouter />
+
+                    <ToastContainer />
+                </FavRecipeProvider>
             </AuthProvider>
         </ThemeProvider>
     );

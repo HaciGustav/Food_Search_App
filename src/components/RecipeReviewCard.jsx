@@ -17,7 +17,12 @@ import Link from '@mui/material/Link';
 import { Box } from '@mui/system';
 import { useAuthContext } from '../context/AuthProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { addRecipe, getFavoriteRecipe } from '../firebase/firestore';
+import {
+    addRecipe,
+    deleteRecipe,
+    getFavoriteRecipe,
+} from '../firebase/firestore';
+import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -30,13 +35,12 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const RecipeReviewCard = ({
-    item,
-    favoriteRecipeList,
-    setFavoriteRecipeList,
-}) => {
+const RecipeReviewCard = ({ item }) => {
     const [expanded, setExpanded] = React.useState(false);
+    const [isRecipeSaved, setIsRecipeSaved] = React.useState(false);
+    const [recipeId, setRecipeId] = React.useState();
     const { user } = useAuthContext();
+    const { favoriteRecipeList, setFavoriteRecipeList } = useFavRecipeContext();
 
     const {
         label,
@@ -52,36 +56,47 @@ const RecipeReviewCard = ({
         calories,
     } = item.recipe;
 
-    const handleFavorite = () => {
-        const { email } = user;
-        const data = { email, label, image, url, uri };
-        addRecipe(data);
-    };
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
     const isFavorite = () => {
-        return favoriteRecipeList?.filter((recipe) => recipe?.uri === uri)
-            .length;
+        if (favoriteRecipes()) {
+            setIsRecipeSaved(true);
+        } else {
+            setIsRecipeSaved(false);
+        }
     };
-    /* const isFavorite = () => {
-        return favoriteRecipeList
-            ?.filter((recipe) => recipe?.uri === uri)
-            ?.map((recipe) => {
-                if (recipe.uri === uri) {
-                    return <FavoriteIcon sx={{ color: '#BD2A2E' }} />;
-                } else {
-                    console.log('else');
-                    return <FavoriteBorderIcon />;
-                }
-            });
-    }; */
+    const favoriteRecipes = () => {
+        const recipe = favoriteRecipeList?.find(
+            (recipe) => recipe?.uri === uri
+        );
+
+        return recipe || false;
+    };
+
+    console.log();
+
+    const handleFavorite = () => {
+        const { email } = user;
+        const data = { email, label, image, url, uri };
+        if (isRecipeSaved) {
+            deleteRecipe(favoriteRecipes()?.id);
+            setIsRecipeSaved(false);
+            return;
+        } else {
+            addRecipe(data);
+            setIsRecipeSaved(true);
+        }
+    };
 
     React.useEffect(() => {
-        getFavoriteRecipe(user?.email, setFavoriteRecipeList);
-    }, []);
+        getFavoriteRecipe(user?.email).then((data) =>
+            setFavoriteRecipeList(data)
+        );
+    }, [isRecipeSaved]);
+    React.useEffect(() => {
+        isFavorite();
+    }, [favoriteRecipeList]);
 
     return (
         <Grid item xs={10} sm={6} md={4} lg={3} justifyContent="center">
@@ -165,7 +180,7 @@ const RecipeReviewCard = ({
                         <IconButton
                             onClick={handleFavorite}
                             aria-label="add to favorites">
-                            {isFavorite() ? (
+                            {isRecipeSaved ? (
                                 <FavoriteIcon sx={{ color: '#BD2A2E' }} />
                             ) : (
                                 <FavoriteBorderIcon />

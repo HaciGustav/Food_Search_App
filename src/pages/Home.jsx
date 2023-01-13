@@ -6,6 +6,7 @@ import RecipeReviewCard from '../components/RecipeReviewCard';
 import Register from '../components/Register';
 import SearchModal from '../components/SearchModal';
 import { useAuthContext } from '../context/AuthProvider';
+import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
 import { getFavoriteRecipe } from '../firebase/firestore';
 
 const Home = () => {
@@ -15,7 +16,7 @@ const Home = () => {
     const handleClose = () => setOpen(false);
 
     const [data, setData] = useState([]);
-    const [favoriteRecipeList, setFavoriteRecipeList] = useState([]);
+    const { favoriteRecipeList, setFavoriteRecipeList } = useFavRecipeContext();
 
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
@@ -59,15 +60,10 @@ const Home = () => {
         handleClose();
     };
 
-    // const isFavoriteFilter = ()=>{
-
-    // }
-
     useEffect(() => {
         getRecipe();
-        getFavoriteRecipe(user?.email, setFavoriteRecipeList);
     }, []);
-
+    console.log(favoriteRecipeList);
     return (
         <Paper>
             <Navbar />
@@ -144,12 +140,7 @@ const Home = () => {
                     margin: 'auto',
                 }}>
                 {data?.hits?.map((item, i) => (
-                    <RecipeReviewCard
-                        favoriteRecipeList={favoriteRecipeList}
-                        setFavoriteRecipeList={setFavoriteRecipeList}
-                        item={item}
-                        key={i}
-                    />
+                    <RecipeReviewCard item={item} key={i} />
                 ))}
             </Grid>
         </Paper>
