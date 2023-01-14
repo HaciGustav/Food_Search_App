@@ -59,6 +59,7 @@ const RecipeReviewCard = ({ item }) => {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
     const isFavorite = () => {
         if (favoriteRecipes()) {
             setIsRecipeSaved(true);
@@ -73,8 +74,6 @@ const RecipeReviewCard = ({ item }) => {
 
         return recipe || false;
     };
-
-    console.log();
 
     const handleFavorite = () => {
         const { email } = user;

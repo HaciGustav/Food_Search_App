@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,12 +12,15 @@ import { useMediaQuery } from '@mui/material';
 import HamburgerMenu from './Hamburger';
 import { useAuthContext } from '../context/AuthProvider';
 import UserAvatarMenu from './UserAvatarMenu';
+import { userObserver } from '../firebase/auth';
 
 const Navbar = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
 
     const [formValues, setFormValues] = useState({});
+
+    // const [displayName, setDisplayName] = useState('User');
 
     const matches = useMediaQuery('(max-width: 600px)');
     const { user } = useAuthContext();
@@ -48,7 +51,7 @@ const Navbar = () => {
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'space-between',
                         height: '100%',
                     }}>
                     <Typography
@@ -56,7 +59,7 @@ const Navbar = () => {
                         component="div"
                         onClick={() => navigate('/home')}
                         sx={{
-                            flexGrow: 1,
+                            // flexGrow: 1,
                             fontFamily: "'Great Vibes', cursive",
                             cursor: 'pointer',
                         }}>
