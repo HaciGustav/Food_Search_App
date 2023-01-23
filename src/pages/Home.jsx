@@ -38,7 +38,7 @@ const Home = () => {
                 url = url + `&${item}=` + checkValue[item];
             }
         });
-
+        console.log('url =>', url);
         try {
             const { data } = await axios(url);
             setData(data);
@@ -66,7 +66,6 @@ const Home = () => {
     console.log(favoriteRecipeList);
     return (
         <Paper>
-            <Navbar />
             <SearchModal
                 handleCheck={handleCheck}
                 handleSubmit={handleSubmit}

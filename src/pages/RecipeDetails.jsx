@@ -1,24 +1,91 @@
-import { Container, Typography } from '@mui/material';
+import {
+    Avatar,
+    Container,
+    Link,
+    List,
+    ListItem,
+    Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-let url =
-    'https://edamam-product-images.s3.amazonaws.com/web-img/2b6/2b63ab8750e667de3bc568723a29ef9c-l.jpg?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEID%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCID3XTlQKlX79hAH81jdCiMYP%2FvwxRE%2F1BgEGDr%2F84w%2B1AiBwL7CR7vf%2B0fjHTLu2xpY3i07SKzC6OKc1QPF4zyl6lirVBAjY%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDE4NzAxNzE1MDk4NiIMa0LtfjCmRpb9VidAKqkEFRUDAH%2FwpZ%2BgsWDnNzpaIUccUY9Ni3AvwJRGlojosCoMw5volcrtxpEN08mw2KX1pRsZY%2FaGLUYDQ4lFdLBljBTKdJIeB6ROo8teXtkjeOdNAXejLtthqncUhplLG2QfUH37Pv4BS80Cz30sH%2BZh42xso3kMG8pO13BBpDE6CbzvAFJpyHcT9r9wOyn4vkZL6%2FRV4zJ8%2BpPz8yNVT2t2RxmHORP5latUQ65kh5TWlb%2BI5agyN5Sy2NyPVX48ftJzdW%2B17kcDVDsmryWKDn0p0UuXVLEqBAzHKlVjoiW%2FcHdgj15YP3JlnNqbr%2BqekV1yEWwaOluXasCMv4hMuYj%2Bhj4bd%2B2W9guiEJDHX6IFxZuqGSM5GDgp9Ia1%2FoaYb6y22xCHlP3t5BFq4oaCUiBeBuieMoAPZ2lNDMTW0Ad6q9ifONjYiXQJ59gTllUTOOxkhzOGjFy2NtRr%2Bfa7QbD0eF5HoTAufvEO8Gwq9FkaSA%2BBM6o%2FsNxo%2FwMBFlbFex4gMLXD0IqHMcn3myNuyy%2Bwjz%2BuUmMGH3%2B7qT2pMfSkh%2F1fDfcSyPFb0D5G3IXhIhVzLz2PWCtKg8V37kxFF9FZTnLYrpM%2Fc1ZvsKMvIyRso6v6FK2eh2pW%2BBBjsc8NurGRVmKZ9Y3EUsmVLTNiAktMNkxZOTiK5yG6Qj0GlUAlDTwaEQ2thpdOhXcGIQ%2BN%2BnfhXCXMFo5aUGruZovLFWBWK6SXpbGvaGfnnjCj7IWeBjqqAfLa4E8HNXE45JYtduQ4DVJ2wPD%2BadExxYwscjU8Oxyj6xRn%2F4ssr2Vu9qGXwVCFY1CgVD7tjnOaWbyW4QLCwRE37J9n2jUZ4qcQzW4FBbD0Jkb73F2uboBs9O1PJNWPyNGEtWi6W8J8c1NQgYg5w%2F1vb0C0nRmERmtxv6bllJ%2B2F0idurlGEdx9PWZiwaVeB8HwOtffxUKMFD4QpH9O9o7D6Uv3g9bttIe%2B&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230113T161227Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=ASIASXCYXIIFPX3HYZDM%2F20230113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=f747815966b78404c3969ae19e6a692f359c8d92a6de0ade3897003be804b28a';
+import LaunchIcon from '@mui/icons-material/Launch';
+import { useLocation } from 'react-router-dom';
 
-const recipeImageStyle = {
-    width: '50%',
-    backgroundImage: `url(${url})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+const ListComponent = ({ arr, heading }) => (
+    <List
+        sx={{
+            width: '80%',
+            margin: 'auto',
+        }}>
+        <Typography variant="h6">{heading}:</Typography>
+        {arr?.map((x) => (
+            <ListItem key={x}>◈ {x.toUpperCase()}</ListItem>
+        ))}
+    </List>
+);
+
+const Label = ({ label }) => {
+    return (
+        <>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '10px',
+                    backgroundColor: '#0002',
+                    marginRight: '3px',
+                }}>
+                {label}
+            </Box>
+        </>
+    );
+};
+
+const IngListItem = ({ item }) => {
+    return (
+        <ListItem
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                maxWidth: '400px',
+            }}>
+            {' '}
+            ◈ {item?.text} <Avatar alt={item?.food} src={item?.image} />{' '}
+        </ListItem>
+    );
 };
 
 const RecipeDetails = () => {
+    const { state } = useLocation();
+    console.log(state);
+    const {
+        ingredients,
+        label,
+        image,
+        mealType,
+        dishType,
+        cuisineType,
+        dietLabels,
+        totalTime,
+        source,
+        uri,
+        url,
+    } = state.recipe;
+
+    const recipeImageStyle = {
+        width: '50%',
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    };
     return (
-        <Container maxWidth="xl" sx={{ border: '2px solid red' }}>
+        <Box sx={{ width: '80%', margin: 'auto' }}>
             <Box
                 sx={{
                     display: 'flex',
                     height: '70vh',
-                    border: '2px solid blue',
+                    borderBottom: '1px solid #0002',
                 }}>
                 <Box sx={{ width: '50%' }}>
                     <Box
@@ -26,18 +93,86 @@ const RecipeDetails = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
+                            rowGap: '1.5rem',
                             alignItems: 'center',
-                            border: '2px solid blue',
+
                             height: '100%',
                         }}>
-                        <Typography variant="h4" textAlign={'center'}>
-                            BIRSEYLI VODKA
+                        <Typography variant="h3" textAlign={'center'}>
+                            {label}
                         </Typography>
+                        <Box>
+                            <Typography sx={{ textAlign: 'center' }}>
+                                FROM{' '}
+                                <span style={{ fontWeight: '600' }}>
+                                    {source}
+                                </span>
+                            </Typography>
+                            <Link
+                                href={url}
+                                color="inherit"
+                                underline="hover"
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    paddingTop: '10px',
+                                    justifyContent: 'center',
+                                }}>
+                                Go to Website <LaunchIcon fontSize="small" />
+                            </Link>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+
+                                justifyContent: 'center',
+                                rowGap: '1.5rem',
+                                alignItems: 'center',
+                            }}>
+                            {dietLabels?.map((item, i) => (
+                                <Label key={i} label={item} />
+                            ))}
+                        </Box>
                     </Box>
                 </Box>
                 <Box sx={recipeImageStyle}></Box>
             </Box>
-        </Container>
+            <Box>
+                <Typography variant="h6" sx={{ padding: '1rem 0 0 1rem' }}>
+                    Total Time:{' '}
+                    <span style={{ fontWeight: '600' }}>{totalTime}</span>
+                </Typography>
+                <Box
+                    sx={{
+                        padding: '1rem',
+                        display: 'flex',
+                        width: '80%',
+                        marginInline: 'auto',
+                        // justifyContent: 'space-between',
+                    }}>
+                    <List sx={{ width: '50%' }}>
+                        <Typography variant="h6">Ingredients:</Typography>{' '}
+                        {ingredients?.map((item) => (
+                            <IngListItem item={item} />
+                        ))}
+                    </List>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '50%',
+                            borderLeft: '1px solid #0003',
+                        }}>
+                        <ListComponent
+                            arr={cuisineType}
+                            heading={'Cuisine Type'}
+                        />
+                        <ListComponent arr={mealType} heading={'Meal Type'} />
+                        <ListComponent arr={dishType} heading={'Dish Type'} />
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 

@@ -23,6 +23,7 @@ import {
     getFavoriteRecipe,
 } from '../firebase/firestore';
 import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
+import { useNavigate } from 'react-router-dom';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -96,9 +97,16 @@ const RecipeReviewCard = ({ item }) => {
     React.useEffect(() => {
         isFavorite();
     }, [favoriteRecipeList]);
-
+    const navigate = useNavigate();
     return (
-        <Grid item xs={10} sm={6} md={4} lg={3} justifyContent="center">
+        <Grid
+            item
+            xs={10}
+            sm={6}
+            md={4}
+            lg={3}
+            justifyContent="center"
+            onClick={() => navigate('/detail', { state: item })}>
             <Card sx={{ maxWidth: 345, margin: 'auto' }}>
                 <CardHeader title={label} subheader={source} />
                 <CardMedia
@@ -216,4 +224,4 @@ const RecipeReviewCard = ({ item }) => {
     );
 };
 
-export default RecipeReviewCard;
+export default React.memo(RecipeReviewCard);
