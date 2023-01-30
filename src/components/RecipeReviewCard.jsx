@@ -9,7 +9,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
@@ -17,6 +17,8 @@ import Link from '@mui/material/Link';
 import { Box } from '@mui/system';
 import { useAuthContext } from '../context/AuthProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { shadows } from '@mui/system';
+
 import {
     addRecipe,
     deleteRecipe,
@@ -24,6 +26,7 @@ import {
 } from '../firebase/firestore';
 import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
 import { useNavigate } from 'react-router-dom';
+import { blueGrey } from '@mui/material/colors';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -100,7 +103,14 @@ const RecipeReviewCard = ({ item }) => {
     const navigate = useNavigate();
     return (
         <Grid item xs={10} sm={6} md={4} lg={3} justifyContent="center">
-            <Card sx={{ maxWidth: 345, margin: 'auto' }}>
+            <Card
+                sx={{
+                    maxWidth: 345,
+                    margin: 'auto',
+                    border: `10px solid ${blueGrey[600]}`,
+                    borderTop: `35px solid ${blueGrey[600]}`,
+                    boxShadow: 8,
+                }}>
                 <CardHeader title={label} subheader={source} />
                 <CardMedia
                     component="img"
@@ -119,7 +129,7 @@ const RecipeReviewCard = ({ item }) => {
                         <Typography
                             sx={{
                                 border: '1px solid grey',
-                                padding: '3px',
+                                padding: '2px',
                                 width: '50%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },
@@ -132,7 +142,7 @@ const RecipeReviewCard = ({ item }) => {
                         <Typography
                             sx={{
                                 border: '1px solid grey',
-                                padding: '3px',
+                                padding: '2px',
                                 width: '50%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },
@@ -154,7 +164,7 @@ const RecipeReviewCard = ({ item }) => {
                         <Typography
                             sx={{
                                 border: '1px solid grey',
-                                padding: '3px',
+                                padding: '2px',
                                 width: '50%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },
@@ -166,7 +176,7 @@ const RecipeReviewCard = ({ item }) => {
                         <Typography
                             sx={{
                                 border: '1px solid grey',
-                                padding: '3px',
+                                padding: '2px',
                                 width: '50%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },

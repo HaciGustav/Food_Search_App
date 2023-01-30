@@ -52,7 +52,7 @@ const Welcome = () => {
                 sx={{
                     display: 'flex',
                     width: '100vw',
-                    height: '100vh',
+                    height: 'calc(100vh - 6rem)',
                     overflow: 'hidden',
                 }}>
                 <Box sx={{ width: '100%' }}>

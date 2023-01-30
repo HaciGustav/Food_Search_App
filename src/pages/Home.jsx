@@ -10,6 +10,7 @@ import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
 import { getFavoriteRecipe } from '../firebase/firestore';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Loading from '../components/Loading';
 
 const Home = () => {
     // open function for modal
@@ -19,45 +20,51 @@ const Home = () => {
 
     const [data, setData] = useState([]);
     const [nextPage, setNextPage] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { favoriteRecipeList } = useFavRecipeContext();
 
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
     });
 
-    const getRecipe = async () => {
-        if (nextPage) {
-            const { href } = data._links.next;
-            try {
-                const { data } = await axios(href);
-                setData(data);
-            } catch (error) {
-                console.log(error.message);
-            }
-        } else {
-            let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+    const getRecipeNextPage = async () => {
+        const { href } = data._links.next;
 
-            if (checkValue.q && checkValue.q.length > 1) {
-                url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
-            }
-
-            Object.keys(checkValue).forEach((item) => {
-                if (item === 'ingr') {
-                    url = url + `&${item}=` + '0-' + checkValue[item];
-                } else if (checkValue[item] && checkValue[item].length > 1) {
-                    url = url + `&${item}=` + checkValue[item];
-                }
-            });
-            console.log('url=>', url);
-
-            try {
-                const { data } = await axios(url);
-                setData(data);
-            } catch (error) {
-                console.log(error.message);
-            }
+        try {
+            const { data } = await axios(href);
+            setData(data);
+            console.log(href);
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setLoading(false);
         }
-        setNextPage(false);
+    };
+
+    const getRecipe = async () => {
+        let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+
+        if (checkValue.q && checkValue.q.length > 1) {
+            url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+        }
+
+        Object.keys(checkValue).forEach((item) => {
+            if (item === 'ingr') {
+                url = url + `&${item}=` + '0-' + checkValue[item];
+            } else if (checkValue[item] && checkValue[item].length > 1) {
+                url = url + `&${item}=` + checkValue[item];
+            }
+        });
+        console.log('url=>', url);
+
+        try {
+            const { data } = await axios(url);
+            setData(data);
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCheck = (e) => {
@@ -74,11 +81,13 @@ const Home = () => {
     };
 
     useEffect(() => {
+        setLoading(true);
         getRecipe();
     }, []);
     console.log(nextPage);
     return (
         <Paper>
+            {loading && <Loading />}
             <SearchModal
                 handleCheck={handleCheck}
                 handleSubmit={handleSubmit}
@@ -157,12 +166,11 @@ const Home = () => {
             </Grid>
             <Box
                 sx={{
-                    border: '1px solid red',
                     padding: '1rem',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    columnGap: '1rem',
+                    columnGap: '1.5rem',
                 }}>
                 <ArrowBackIcon
                     fontSize="large"
@@ -179,8 +187,9 @@ const Home = () => {
                         backgroundColor: 'black',
                         color: 'white',
                         borderRadius: '50%',
+                        cursor: 'pointer',
                     }}
-                    onClick={() => setNextPage(true)}
+                    onClick={() => getRecipeNextPage()}
                 />
             </Box>
         </Paper>
