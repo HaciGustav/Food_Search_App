@@ -101,7 +101,6 @@ const RecipeDetails = () => {
         try {
             const { data } = await axios(url);
             setRelatedRecipes(data.hits);
-            console.log(relatedRecipes);
         } catch (error) {
             console.log(error.message);
         }

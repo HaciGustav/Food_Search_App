@@ -1,8 +1,9 @@
 import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CarouselItem = ({ item }) => {
-    // const { label, images, image } = item.recipe;
+    const navigate = useNavigate();
 
     const imgStyle = {
         height: '30vh',
@@ -16,11 +17,14 @@ const CarouselItem = ({ item }) => {
 
     return (
         <Paper>
-            <Box sx={{ display: 'flex', columnGap: '5px' }}>
+            <Box sx={{ display: 'flex', columnGap: '5px', cursor: 'pointer' }}>
                 {item.map((slide, i) => {
                     const { label, images, image } = slide.recipe;
                     return (
                         <Box
+                            onClick={() =>
+                                navigate('/detail', { state: slide })
+                            }
                             key={i}
                             sx={{
                                 ...imgStyle,

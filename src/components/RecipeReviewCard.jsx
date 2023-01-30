@@ -99,14 +99,7 @@ const RecipeReviewCard = ({ item }) => {
     }, [favoriteRecipeList]);
     const navigate = useNavigate();
     return (
-        <Grid
-            item
-            xs={10}
-            sm={6}
-            md={4}
-            lg={3}
-            justifyContent="center"
-            onClick={() => navigate('/detail', { state: item })}>
+        <Grid item xs={10} sm={6} md={4} lg={3} justifyContent="center">
             <Card sx={{ maxWidth: 345, margin: 'auto' }}>
                 <CardHeader title={label} subheader={source} />
                 <CardMedia
@@ -114,6 +107,8 @@ const RecipeReviewCard = ({ item }) => {
                     height="194"
                     image={image}
                     alt={label}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => navigate('/detail', { state: item })}
                 />
                 <CardContent>
                     <Box

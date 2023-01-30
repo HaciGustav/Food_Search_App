@@ -8,6 +8,8 @@ import SearchModal from '../components/SearchModal';
 import { useAuthContext } from '../context/AuthProvider';
 import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
 import { getFavoriteRecipe } from '../firebase/firestore';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Home = () => {
     // open function for modal
@@ -16,35 +18,46 @@ const Home = () => {
     const handleClose = () => setOpen(false);
 
     const [data, setData] = useState([]);
-    const { favoriteRecipeList, setFavoriteRecipeList } = useFavRecipeContext();
+    const [nextPage, setNextPage] = useState(false);
+    const { favoriteRecipeList } = useFavRecipeContext();
 
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
     });
 
-    const { user } = useAuthContext();
-
     const getRecipe = async () => {
-        let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
-
-        if (checkValue.q && checkValue.q.length > 1) {
-            url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
-        }
-
-        Object.keys(checkValue).forEach((item) => {
-            if (item === 'ingr') {
-                url = url + `&${item}=` + '0-' + checkValue[item];
-            } else if (checkValue[item] && checkValue[item].length > 1) {
-                url = url + `&${item}=` + checkValue[item];
+        if (nextPage) {
+            const { href } = data._links.next;
+            try {
+                const { data } = await axios(href);
+                setData(data);
+            } catch (error) {
+                console.log(error.message);
             }
-        });
-        console.log('url =>', url);
-        try {
-            const { data } = await axios(url);
-            setData(data);
-        } catch (error) {
-            console.log(error.message);
+        } else {
+            let url = `https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+
+            if (checkValue.q && checkValue.q.length > 1) {
+                url = `https://api.edamam.com/api/recipes/v2?type=public&q=${checkValue.q}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_API_KEY}`;
+            }
+
+            Object.keys(checkValue).forEach((item) => {
+                if (item === 'ingr') {
+                    url = url + `&${item}=` + '0-' + checkValue[item];
+                } else if (checkValue[item] && checkValue[item].length > 1) {
+                    url = url + `&${item}=` + checkValue[item];
+                }
+            });
+            console.log('url=>', url);
+
+            try {
+                const { data } = await axios(url);
+                setData(data);
+            } catch (error) {
+                console.log(error.message);
+            }
         }
+        setNextPage(false);
     };
 
     const handleCheck = (e) => {
@@ -63,7 +76,7 @@ const Home = () => {
     useEffect(() => {
         getRecipe();
     }, []);
-    console.log(favoriteRecipeList);
+    console.log(nextPage);
     return (
         <Paper>
             <SearchModal
@@ -142,6 +155,34 @@ const Home = () => {
                     <RecipeReviewCard item={item} key={i} />
                 ))}
             </Grid>
+            <Box
+                sx={{
+                    border: '1px solid red',
+                    padding: '1rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    columnGap: '1rem',
+                }}>
+                <ArrowBackIcon
+                    fontSize="large"
+                    sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        borderRadius: '50%',
+                    }}
+                />
+                <span>◆ ◆ ◆ ◆ ◆ ◆</span>
+                <ArrowForwardIcon
+                    fontSize="large"
+                    sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        borderRadius: '50%',
+                    }}
+                    onClick={() => setNextPage(true)}
+                />
+            </Box>
         </Paper>
     );
 };
