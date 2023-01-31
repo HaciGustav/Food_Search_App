@@ -26,6 +26,9 @@ const db = getFirestore(app);
 
 export const addRecipe = async (item) => {
     const { email, label, image, url, uri } = item;
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth();
+    const day = new Date().getDate();
     try {
         const docRef = await addDoc(collection(db, 'favoriteRecipes'), {
             email,
@@ -33,6 +36,7 @@ export const addRecipe = async (item) => {
             image,
             url,
             uri,
+            addedAt: { year, month, day },
         });
         console.log('addRecipe');
     } catch (err) {
@@ -70,4 +74,22 @@ export const deleteRecipe = async (id) => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const userRecipes = async (email) => {
+    const recipeArray = [];
+    const q = query(
+        collection(db, 'favoriteRecipes'),
+        where('email', '==', `${email}`)
+    );
+    try {
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+            recipeArray.push({ ...doc.data(), id: doc.id });
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+    return recipeArray;
 };

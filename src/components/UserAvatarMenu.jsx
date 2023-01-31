@@ -2,6 +2,7 @@ import { Menu, MenuItem } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthProvider';
 import { handleLogOut } from '../firebase/auth';
 
@@ -19,7 +20,12 @@ export default function UserAvatarMenu() {
         // setOpen(open);
         setAnchorEl(null);
     };
+    const navigate = useNavigate();
 
+    const goToProfile = () => {
+        handleClose(false);
+        navigate('/profile');
+    };
     return (
         <div>
             <Avatar
@@ -40,7 +46,7 @@ export default function UserAvatarMenu() {
                 MenuListProps={{
                     'aria-labelledby': 'menu-button',
                 }}>
-                <MenuItem onClick={() => handleClose(false)}>Profile</MenuItem>
+                <MenuItem onClick={() => goToProfile()}>Profile</MenuItem>
 
                 <MenuItem
                     onClick={() => {
