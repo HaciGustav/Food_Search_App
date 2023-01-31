@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { userObserver } from '../firebase/auth';
+
 import { getFavoriteRecipe } from '../firebase/firestore';
 import { useAuthContext } from './AuthProvider';
 
@@ -13,6 +13,7 @@ const FavRecipeProvider = ({ children }) => {
 
     useEffect(() => {
         getFavoriteRecipe(user?.email, setFavoriteRecipeList);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

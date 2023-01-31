@@ -10,7 +10,6 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -80,33 +79,3 @@ const RecipeLabels = ({ healthLabels }) => {
 };
 
 export default RecipeLabels;
-
-function RecipeewCard() {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
-            />
-
-            <CardActions disableSpacing>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more">
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent></CardContent>
-            </Collapse>
-        </Card>
-    );
-}

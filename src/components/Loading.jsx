@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { ClimbingBoxLoader } from 'react-spinners';
+
 import HashLoader from 'react-spinners/HashLoader';
-import RingLoader from 'react-spinners/RingLoader';
 
 const Loading = () => {
     return (

@@ -7,7 +7,6 @@ import {
     signOut,
     updateProfile,
 } from 'firebase/auth';
-import { toastSuccessNotify } from '../helpers/toastNotify';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

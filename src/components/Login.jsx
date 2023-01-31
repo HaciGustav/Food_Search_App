@@ -9,13 +9,6 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { blueGrey } from '@mui/material/colors';
 import { handleSignIn } from '../firebase/auth';
 
-const textFieldStyle = {
-    '.MuiInputBase-input:focus': { height: 'auto' },
-    width: '90%',
-
-    transition: 'all 0.5s ease',
-};
-
 export default function Login({
     loginOpen,
     setLoginOpen,

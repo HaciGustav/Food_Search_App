@@ -25,20 +25,34 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const addRecipe = async (item) => {
-    const { email, label, image, url, uri } = item;
+    const {
+        email,
+        label,
+        image,
+        url,
+        uri,
+        source,
+        mealType,
+        calories,
+        dishType,
+    } = item;
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     const day = new Date().getDate();
     try {
-        const docRef = await addDoc(collection(db, 'favoriteRecipes'), {
+        await addDoc(collection(db, 'favoriteRecipes'), {
             email,
             label,
             image,
             url,
             uri,
+            source,
+            mealType,
+            calories,
+            dishType,
             addedAt: { year, month, day },
         });
-        console.log('addRecipe');
+        //TODO: toastify
     } catch (err) {
         console.log(err);
     }

@@ -1,15 +1,13 @@
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { flexColumn, flexContainer, pageContainer } from '../styles';
+
 import loginBG from '../assets/loginBG.jpg';
-import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { blueGrey, red, teal } from '@mui/material/colors';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
-    const [loginValues, setLoginValues] = useState({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    // const [loginValues, setLoginValues] = useState({});
+    // const [isSubmitted, setIsSubmitted] = useState(false);
     const [getStarted, setGetStarted] = useState(false);
     const navigate = useNavigate();
     const handleGetStarted = () => {
@@ -19,15 +17,15 @@ const Welcome = () => {
         }, 750);
     };
 
-    const handleChange = (e) => {
-        setLoginValues({ ...loginValues, [e.target.name]: e.target.value });
-    };
+    // const handleChange = (e) => {
+    //     setLoginValues({ ...loginValues, [e.target.name]: e.target.value });
+    // };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsSubmitted((prevState) => !prevState);
-        //TODO: FIREBASE AUTH
-    };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setIsSubmitted((prevState) => !prevState);
+    //     //TODO: FIREBASE AUTH
+    // };
 
     const bgImgStyle = {
         width: '100%',
@@ -37,14 +35,14 @@ const Welcome = () => {
         backgroundSize: 'cover',
     };
 
-    const buttonSX = {
-        transition: '0.2s ease',
-        backgroundColor: isSubmitted ? '#1de9b6' : 'black',
-        color: 'white',
-        '&:hover': {
-            backgroundColor: 'black',
-        },
-    };
+    // const buttonSX = {
+    //     transition: '0.2s ease',
+    //     backgroundColor: isSubmitted ? '#1de9b6' : 'black',
+    //     color: 'white',
+    //     '&:hover': {
+    //         backgroundColor: 'black',
+    //     },
+    // };
 
     return (
         <Paper>

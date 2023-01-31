@@ -1,9 +1,9 @@
 import {
     Avatar,
-    Container,
     Link,
     List,
     ListItem,
+    Paper,
     Typography,
     useMediaQuery,
 } from '@mui/material';
@@ -86,7 +86,7 @@ const RecipeDetails = () => {
         healthLabels,
         cautions,
         source,
-        uri,
+
         url,
     } = state.recipe;
 
@@ -117,12 +117,11 @@ const RecipeDetails = () => {
     useEffect(() => {
         setLoading(true);
         getRelatedRecipes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log('cautions', cautions);
-
     return (
-        <>
+        <Paper>
             <Box
                 sx={{
                     width: match992 ? '100%' : '80%',
@@ -257,7 +256,7 @@ const RecipeDetails = () => {
             <Box>
                 <RecipesCarousel matches={matches} data={relatedRecipes} />
             </Box>
-        </>
+        </Paper>
     );
 };
 

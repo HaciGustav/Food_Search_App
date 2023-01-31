@@ -1,13 +1,11 @@
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
+
 import RecipeReviewCard from '../components/RecipeReviewCard';
-import Register from '../components/Register';
+
 import SearchModal from '../components/SearchModal';
-import { useAuthContext } from '../context/AuthProvider';
-import { useFavRecipeContext } from '../context/FavoriteRecipeProvider';
-import { getFavoriteRecipe } from '../firebase/firestore';
+
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Loading from '../components/Loading';
@@ -19,9 +17,8 @@ const Home = () => {
     const handleClose = () => setOpen(false);
 
     const [data, setData] = useState([]);
-    const [nextPage, setNextPage] = useState(false);
+
     const [loading, setLoading] = useState(false);
-    const { favoriteRecipeList } = useFavRecipeContext();
 
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
@@ -50,12 +47,11 @@ const Home = () => {
 
         Object.keys(checkValue).forEach((item) => {
             if (item === 'ingr') {
-                url = url + `&${item}=` + '0-' + checkValue[item];
+                url = `${url}&${item}=0-${checkValue[item]}`;
             } else if (checkValue[item] && checkValue[item].length > 1) {
-                url = url + `&${item}=` + checkValue[item];
+                url = `${url}&${item}=${checkValue[item]}`;
             }
         });
-        console.log('url=>', url);
 
         try {
             const { data } = await axios(url);
@@ -83,8 +79,9 @@ const Home = () => {
     useEffect(() => {
         setLoading(true);
         getRecipe();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(nextPage);
+
     return (
         <Paper>
             {loading && <Loading />}

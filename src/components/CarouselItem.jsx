@@ -19,7 +19,7 @@ const CarouselItem = ({ item }) => {
         <Paper>
             <Box sx={{ display: 'flex', columnGap: '5px', cursor: 'pointer' }}>
                 {item.map((slide, i) => {
-                    const { label, images, image } = slide.recipe;
+                    const { label, image } = slide.recipe;
                     return (
                         <Box
                             onClick={() =>

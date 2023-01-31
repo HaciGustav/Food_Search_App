@@ -17,7 +17,6 @@ import Link from '@mui/material/Link';
 import { Box } from '@mui/system';
 import { useAuthContext } from '../context/AuthProvider';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { shadows } from '@mui/system';
 
 import {
     addRecipe,
@@ -42,7 +41,7 @@ const ExpandMore = styled((props) => {
 const RecipeReviewCard = ({ item }) => {
     const [expanded, setExpanded] = React.useState(false);
     const [isRecipeSaved, setIsRecipeSaved] = React.useState(false);
-    const [recipeId, setRecipeId] = React.useState();
+
     const { user } = useAuthContext();
     const { favoriteRecipeList, setFavoriteRecipeList } = useFavRecipeContext();
 
@@ -53,7 +52,7 @@ const RecipeReviewCard = ({ item }) => {
         url,
         uri,
         ingredientLines,
-        totalTime,
+
         dishType,
         mealType,
         cuisineType,
@@ -81,7 +80,17 @@ const RecipeReviewCard = ({ item }) => {
 
     const handleFavorite = () => {
         const { email } = user;
-        const data = { email, label, image, url, uri };
+        const data = {
+            email,
+            label,
+            image,
+            url,
+            uri,
+            source,
+            mealType,
+            calories,
+            dishType,
+        };
         if (isRecipeSaved) {
             deleteRecipe(favoriteRecipes()?.id);
             setIsRecipeSaved(false);
@@ -96,9 +105,11 @@ const RecipeReviewCard = ({ item }) => {
         getFavoriteRecipe(user?.email).then((data) =>
             setFavoriteRecipeList(data)
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRecipeSaved]);
     React.useEffect(() => {
         isFavorite();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [favoriteRecipeList]);
     const navigate = useNavigate();
     return (
