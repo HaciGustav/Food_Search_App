@@ -15,6 +15,7 @@ import axios from 'axios';
 import RecipesCarousel from '../components/RecipeCaroussel';
 import Loading from '../components/Loading';
 import { blueGrey } from '@mui/material/colors';
+import RecipeLabels from '../components/RecipeLabels';
 
 const ListComponent = ({ arr, heading, match768 }) => (
     <List
@@ -29,7 +30,7 @@ const ListComponent = ({ arr, heading, match768 }) => (
     </List>
 );
 
-const Label = ({ label }) => {
+const Label = ({ label, cautionBgColor }) => {
     return (
         <>
             <Box
@@ -38,7 +39,7 @@ const Label = ({ label }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: '10px',
-                    backgroundColor: '#0002',
+                    backgroundColor: cautionBgColor ? cautionBgColor : '#0002',
                     marginRight: '3px',
                 }}>
                 {label}
@@ -66,7 +67,7 @@ const RecipeDetails = () => {
     const [loading, setLoading] = useState(false);
 
     //media query parameters
-    const matchLessThan576 = useMediaQuery('(max-width: 576px)');
+
     const match576 = useMediaQuery('(max-width: 576px)');
     const match768 = useMediaQuery('(max-width: 768px)');
     const match992 = useMediaQuery('(max-width: 992px)');
@@ -82,6 +83,8 @@ const RecipeDetails = () => {
         cuisineType,
         dietLabels,
         totalTime,
+        healthLabels,
+        cautions,
         source,
         uri,
         url,
@@ -116,6 +119,8 @@ const RecipeDetails = () => {
         getRelatedRecipes();
     }, []);
 
+    console.log('cautions', cautions);
+
     return (
         <>
             <Box
@@ -144,7 +149,6 @@ const RecipeDetails = () => {
                                 justifyContent: 'center',
                                 rowGap: '1.5rem',
                                 alignItems: 'center',
-
                                 height: '100%',
                             }}>
                             <Typography variant="h3" textAlign={'center'}>
@@ -182,6 +186,14 @@ const RecipeDetails = () => {
                                 {dietLabels?.map((item, i) => (
                                     <Label key={i} label={item} />
                                 ))}
+                                {cautions &&
+                                    cautions?.map((item, i) => (
+                                        <Label
+                                            key={i}
+                                            cautionBgColor="#960000d1"
+                                            label={item}
+                                        />
+                                    ))}
                             </Box>
                         </Box>
                     </Box>
@@ -206,7 +218,6 @@ const RecipeDetails = () => {
                             marginInline: 'auto',
                             flexDirection: match768 && 'column',
                             rowGap: '1rem',
-                            // justifyContent: 'space-between',
                         }}>
                         <List sx={{ width: match768 ? '100%' : '50%' }}>
                             <Typography variant="h6">Ingredients:</Typography>{' '}
@@ -219,7 +230,8 @@ const RecipeDetails = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: match768 ? '100%' : '50%',
-                                borderLeft: `3px solid ${blueGrey[900]}`,
+                                borderLeft:
+                                    !match576 && `3px solid ${blueGrey[900]}`,
                             }}>
                             <ListComponent
                                 match768={match768}
@@ -240,6 +252,8 @@ const RecipeDetails = () => {
                     </Box>
                 </Box>
             </Box>
+
+            <RecipeLabels healthLabels={healthLabels} />
             <Box>
                 <RecipesCarousel matches={matches} data={relatedRecipes} />
             </Box>

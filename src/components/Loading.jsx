@@ -19,7 +19,7 @@ const Loading = () => {
                 right: '0',
                 zIndex: '5',
             }}>
-            <HashLoader size="100" speedMultiplier="1.5" color="#fff" />
+            <HashLoader size={100} speedMultiplier="1.5" color="#fff" />
         </Box>
     );
 };
