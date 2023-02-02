@@ -25,3 +25,33 @@ code {
 #root{
   position: relative;
 }
+
+
+@keyframes moon {
+  0%{
+    transform:translateY(-100%)
+  }
+  75%{
+    transform: translateY(20%);
+
+  }
+  100%{
+    transform: translateY(0) rotate(-45deg);
+    
+  }
+  
+}
+@keyframes sun {
+  0%{
+    width: 0;
+    
+    
+  }
+  
+  100%{
+    width: 6px;
+    ;
+    
+  }
+  
+}

@@ -9,7 +9,7 @@ import FavRecipeProvider from './context/FavoriteRecipeProvider';
 import AppRouter from './router/AppRouter';
 
 function App() {
-    const [darkMode, setDarkMode] = useState('dark');
+    const [darkMode, setDarkMode] = useState('light');
     const theme = createTheme({
         palette: {
             mode: `${darkMode}`,
@@ -27,7 +27,10 @@ function App() {
         <ThemeProvider theme={theme}>
             <AuthProvider>
                 <FavRecipeProvider>
-                    <AppRouter handleDarkModeSwitch={handleDarkModeSwitch} />
+                    <AppRouter
+                        darkMode={darkMode}
+                        handleDarkModeSwitch={handleDarkModeSwitch}
+                    />
 
                     <ToastContainer />
                 </FavRecipeProvider>
