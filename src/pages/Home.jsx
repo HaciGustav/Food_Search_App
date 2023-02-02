@@ -1,4 +1,11 @@
-import { Box, Button, Grid, Paper, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    Grid,
+    Paper,
+    TextField,
+    useMediaQuery,
+} from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -23,6 +30,8 @@ const Home = () => {
     const [checkValue, setCheckValue] = useState({
         mealType: 'dinner',
     });
+
+    const match760 = useMediaQuery('(max-width:760px)');
 
     const getRecipeNextPage = async () => {
         const { href } = data._links.next;
@@ -154,7 +163,7 @@ const Home = () => {
                 sx={{
                     justifyContent: 'center',
                     paddingTop: '1rem',
-                    width: '80%',
+                    width: match760 ? '100%' : '80%',
                     margin: 'auto',
                 }}>
                 {data?.hits?.map((item, i) => (

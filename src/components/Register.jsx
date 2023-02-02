@@ -6,7 +6,7 @@ import { Grid, TextField, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { blueGrey } from '@mui/material/colors';
 import GoogleIcon from '@mui/icons-material/Google';
-import { handleSignUp } from '../firebase/auth';
+import { handleSignUp, signUpWithGoogle } from '../firebase/auth';
 import { useAuthContext } from '../context/AuthProvider';
 
 const buttonSX = {
@@ -50,6 +50,11 @@ export default function Register({
 
         //add user to db function
 
+        setRegisterOpen(false);
+    };
+
+    const handleGoogleSignup = () => {
+        signUpWithGoogle().then((res) => setUser(res));
         setRegisterOpen(false);
     };
 
@@ -168,6 +173,7 @@ export default function Register({
                             }}>
                             <Grid item xs={10}>
                                 <Button
+                                    onClick={handleGoogleSignup}
                                     sx={buttonSX}
                                     variant="contained"
                                     size="large">

@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Grid } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import Link from '@mui/material/Link';
 import { Box } from '@mui/system';
@@ -41,6 +41,8 @@ const ExpandMore = styled((props) => {
 const RecipeReviewCard = ({ item }) => {
     const [expanded, setExpanded] = React.useState(false);
     const [isRecipeSaved, setIsRecipeSaved] = React.useState(false);
+
+    const match450 = useMediaQuery('(max-width: 450px)');
 
     const { user } = useAuthContext();
     const { favoriteRecipeList, setFavoriteRecipeList } = useFavRecipeContext();
@@ -135,13 +137,15 @@ const RecipeReviewCard = ({ item }) => {
                     <Box
                         sx={{
                             display: 'flex',
+                            flexDirection: match450 ? 'column' : 'row',
                             justifyContent: 'space-evenly',
+                            alignItems: 'center',
                         }}>
                         <Typography
                             sx={{
                                 border: '1px solid grey',
                                 padding: '2px',
-                                width: '50%',
+                                width: '100%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },
                             }}
@@ -154,7 +158,7 @@ const RecipeReviewCard = ({ item }) => {
                             sx={{
                                 border: '1px solid grey',
                                 padding: '2px',
-                                width: '50%',
+                                width: '100%',
                                 cursor: 'pointer',
                                 '&:hover': { color: '#B33F00' },
                             }}
@@ -166,37 +170,40 @@ const RecipeReviewCard = ({ item }) => {
                                 : 'Unknown'}
                         </Typography>
                     </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-evenly',
-                            paddingTop: '10px',
-                        }}>
-                        <Typography
+                    {!match450 && (
+                        <Box
                             sx={{
-                                border: '1px solid grey',
-                                padding: '2px',
-                                width: '50%',
-                                cursor: 'pointer',
-                                '&:hover': { color: '#B33F00' },
-                            }}
-                            variant="body2"
-                            color="text.secondary">
-                            {mealType ? mealType[0] : 'Unknown'}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                border: '1px solid grey',
-                                padding: '2px',
-                                width: '50%',
-                                cursor: 'pointer',
-                                '&:hover': { color: '#B33F00' },
-                            }}
-                            variant="body2"
-                            color="text.secondary">
-                            {dishType ? dishType[0] : 'Unknown'}
-                        </Typography>
-                    </Box>
+                                display: 'flex',
+                                justifyContent: 'space-evenly',
+                                paddingTop: '10px',
+                            }}>
+                            <Typography
+                                sx={{
+                                    border: '1px solid grey',
+                                    padding: '2px',
+                                    width: '50%',
+                                    wordBreak: 'break-word',
+                                    cursor: 'pointer',
+                                    '&:hover': { color: '#B33F00' },
+                                }}
+                                variant="body2"
+                                color="text.secondary">
+                                {mealType ? mealType[0] : 'Unknown'}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    border: '1px solid grey',
+                                    padding: '2px',
+                                    width: '50%',
+                                    cursor: 'pointer',
+                                    '&:hover': { color: '#B33F00' },
+                                }}
+                                variant="body2"
+                                color="text.secondary">
+                                {dishType ? dishType[0] : 'Unknown'}
+                            </Typography>
+                        </Box>
+                    )}
                 </CardContent>
                 <CardActions disableSpacing>
                     {user && (

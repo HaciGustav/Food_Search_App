@@ -34,7 +34,7 @@ const DarkModeSwitch = ({ handleDarkModeSwitch, darkMode }) => {
     return (
         <div onClick={handleDarkModeSwitch} style={containerStyle}>
             {/* Moon-Dark Part */}
-            {darkMode == 'dark' && (
+            {darkMode === 'dark' && (
                 <div
                     style={{
                         position: 'relative',
@@ -72,7 +72,7 @@ const DarkModeSwitch = ({ handleDarkModeSwitch, darkMode }) => {
                         }}></div>
                 </div>
             )}
-            {darkMode == 'light' && (
+            {darkMode === 'light' && (
                 <div
                     style={{
                         position: 'relative',

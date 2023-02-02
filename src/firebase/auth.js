@@ -2,8 +2,10 @@ import { initializeApp } from 'firebase/app';
 import {
     createUserWithEmailAndPassword,
     getAuth,
+    GoogleAuthProvider,
     onAuthStateChanged,
     signInWithEmailAndPassword,
+    signInWithPopup,
     signOut,
     updateProfile,
 } from 'firebase/auth';
@@ -94,4 +96,18 @@ export const handleLogOut = async () => {
     } catch (err) {
         console.log(err);
     }
+};
+
+// GOogle Signup
+export const signUpWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // toastSuccessNotify('Signed Up Successfully ');
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            // toastFailedNotify('Something went wrong! Try again!');
+        });
 };
