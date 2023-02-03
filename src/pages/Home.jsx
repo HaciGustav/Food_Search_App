@@ -35,11 +35,11 @@ const Home = () => {
 
     const getRecipeNextPage = async () => {
         const { href } = data._links.next;
+        setLoading(true);
 
         try {
             const { data } = await axios(href);
             setData(data);
-            console.log(href);
         } catch (error) {
             console.log(error.message);
         } finally {

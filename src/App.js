@@ -14,7 +14,7 @@ function App() {
         palette: {
             mode: `${darkMode}`,
             primary: {
-                main: blueGrey[900],
+                main: blueGrey[600],
             },
         },
     });

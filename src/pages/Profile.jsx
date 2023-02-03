@@ -201,11 +201,26 @@ const Profile = () => {
         alignItems: 'center',
         columnGap: '5px',
     };
+    const scrollbarStyle = {
+        '&::-webkit-scrollbar': {
+            width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            background: '#888',
+        },
+        '&::-webkit-scrollbar-track': {
+            background: '#f1f1f1',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+            background: '#555',
+        },
+    };
 
     useEffect(() => {
         userRecipes(email).then((res) => setRecipes(res));
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user]);
 
     return (
         <Box
@@ -234,6 +249,9 @@ const Profile = () => {
                     padding: match740 ? '0' : '1rem',
                     rowGap: '1rem',
                     minHeight: '90vh',
+                    maxHeight: 'calc(100vh - 6rem)',
+                    overflow: 'auto',
+                    ...scrollbarStyle,
                 }}>
                 <Box
                     sx={{
