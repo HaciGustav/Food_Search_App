@@ -23,6 +23,7 @@ const sun = {
 const sunlight = {
     width: '6px',
     height: '3px',
+    borderRadius: '2px',
     margin: 'auto',
     transform: 'translateY(-250%) rotate(90deg)',
     backgroundColor: 'yellow',

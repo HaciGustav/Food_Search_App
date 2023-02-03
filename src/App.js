@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from './context/AuthProvider';
 import FavRecipeProvider from './context/FavoriteRecipeProvider';
+import RelatedRecipeProvider from './context/RelatedRecipeProvider';
 import AppRouter from './router/AppRouter';
 
 function App() {
@@ -27,12 +28,13 @@ function App() {
         <ThemeProvider theme={theme}>
             <AuthProvider>
                 <FavRecipeProvider>
-                    <AppRouter
-                        darkMode={darkMode}
-                        handleDarkModeSwitch={handleDarkModeSwitch}
-                    />
-
-                    <ToastContainer />
+                    <RelatedRecipeProvider>
+                        <AppRouter
+                            darkMode={darkMode}
+                            handleDarkModeSwitch={handleDarkModeSwitch}
+                        />
+                        <ToastContainer />
+                    </RelatedRecipeProvider>
                 </FavRecipeProvider>
             </AuthProvider>
         </ThemeProvider>

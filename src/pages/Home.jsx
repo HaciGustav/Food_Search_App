@@ -17,6 +17,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Loading from '../components/Loading';
 
+import { useRelatedRecipeContext } from '../context/RelatedRecipeProvider';
+
 const Home = () => {
     // open function for modal
     const [open, setOpen] = useState(false);
@@ -85,9 +87,27 @@ const Home = () => {
         handleClose();
     };
 
+    const { getRelatedRecipeFromTags, params, setParams } =
+        useRelatedRecipeContext();
+
+    if (params) {
+        console.log('aösd');
+    }
+
+    useEffect(() => {
+        if (params) {
+            getRelatedRecipeFromTags(params, setLoading).then((res) =>
+                setData(res)
+            );
+            setParams(null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     useEffect(() => {
         setLoading(true);
         getRecipe();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

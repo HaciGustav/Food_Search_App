@@ -17,23 +17,25 @@ import Loading from '../components/Loading';
 import { blueGrey } from '@mui/material/colors';
 import RecipeLabels from '../components/RecipeLabels';
 
-const ListComponent = ({ arr, heading, match768 }) => (
-    <List
-        sx={{
-            width: match768 ? '100%' : '80%',
-            margin: 'auto',
-        }}>
-        <Typography variant="h6">{heading}:</Typography>
-        {arr?.map((x) => (
-            <ListItem key={x}>◈ {x.toUpperCase()}</ListItem>
-        ))}
-    </List>
-);
+const IngListItem = ({ item }) => {
+    return (
+        <ListItem
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                maxWidth: '400px',
+            }}>
+            {' '}
+            ◈ {item?.text} <Avatar alt={item?.food} src={item?.image} />{' '}
+        </ListItem>
+    );
+};
 
-const Label = ({ label, cautionBgColor }) => {
+const Label = ({ label, cautionBgColor, name }) => {
     return (
         <>
             <Box
+                name={name}
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -48,19 +50,20 @@ const Label = ({ label, cautionBgColor }) => {
     );
 };
 
-const IngListItem = ({ item }) => {
-    return (
-        <ListItem
-            sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                maxWidth: '400px',
-            }}>
-            {' '}
-            ◈ {item?.text} <Avatar alt={item?.food} src={item?.image} />{' '}
-        </ListItem>
-    );
-};
+const ListComponent = ({ name, arr, heading, match768 }) => (
+    <List
+        sx={{
+            width: match768 ? '100%' : '80%',
+            margin: 'auto',
+        }}>
+        <Typography variant="h6">{heading}:</Typography>
+        {arr?.map((x) => (
+            <ListItem name={name} key={x}>
+                ◈ {x.toUpperCase()}
+            </ListItem>
+        ))}
+    </List>
+);
 
 const RecipeDetails = () => {
     const [relatedRecipes, setRelatedRecipes] = useState([]);
@@ -119,12 +122,19 @@ const RecipeDetails = () => {
         getRelatedRecipes();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.recipe]);
 
     return (
         <Paper>
             <Box
                 sx={{
-                    width: match992 ? '100%' : '80%',
+                    width: match992 ? '90%' : '80%',
                     margin: 'auto',
                     paddingTop: '1rem',
                 }}>
@@ -183,11 +193,16 @@ const RecipeDetails = () => {
                                     alignItems: 'center',
                                 }}>
                                 {dietLabels?.map((item, i) => (
-                                    <Label key={i} label={item} />
+                                    <Label
+                                        name={dietLabels}
+                                        key={i}
+                                        label={item}
+                                    />
                                 ))}
                                 {cautions &&
                                     cautions?.map((item, i) => (
                                         <Label
+                                            name={cautions}
                                             key={i}
                                             cautionBgColor="#960000d1"
                                             label={item}

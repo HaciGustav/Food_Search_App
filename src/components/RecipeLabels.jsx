@@ -12,6 +12,8 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRelatedRecipeContext } from '../context/RelatedRecipeProvider';
+import { useNavigate } from 'react-router-dom';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -25,14 +27,21 @@ const ExpandMore = styled((props) => {
 }));
 
 const Label = ({ label }) => {
+    const navigate = useNavigate();
+    const { setParams } = useRelatedRecipeContext();
     return (
         <Box
+            onClick={() => {
+                setParams({ label, health: 'health' });
+                navigate('/home');
+            }}
             sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: '10px',
                 backgroundColor: '#0002',
+                cursor: 'pointer',
             }}>
             {label}
         </Box>
