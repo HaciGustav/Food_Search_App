@@ -6,7 +6,8 @@ import { Grid, TextField, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { blueGrey } from '@mui/material/colors';
 import GoogleIcon from '@mui/icons-material/Google';
-import { handleSignUp, signUpWithGoogle } from '../firebase/auth';
+import { handleSignUp } from '../firebase/auth';
+import {signUpWithGoogle} from 'firebase/auth'
 import { useAuthContext } from '../context/AuthProvider';
 
 const buttonSX = {
